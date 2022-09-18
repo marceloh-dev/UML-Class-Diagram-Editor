@@ -1,0 +1,9 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="icon-template">
+
+<circle id="Ellipse 10" cx="7.94118" cy="7.94118" r="7.94118" fill="#353535"/>
+<ellipse id="Ellipse 11" rx="1.98529" ry="2.48162" transform="matrix(1 0 0 -1 7.94117 6.45222)" fill="#AFAFAF"/>
+<path id="Intersect" fill-rule="evenodd" clip-rule="evenodd" d="M3.49506 14.522C4.22096 11.9156 5.94706 10.0719 7.99747 10.0297C10.0437 9.98764 11.841 11.7515 12.6757 14.3173C11.3537 15.3005 9.71539 15.8824 7.9412 15.8824C6.29386 15.8824 4.76368 15.3808 3.49506 14.522Z" fill="#AFAFAF"/>
+
+</g>
+</svg>
