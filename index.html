@@ -7,11 +7,13 @@
     <title>UML Editor</title>
     <link rel="stylesheet" href="style.css">
     <script src="p5.min.js" defer></script>
-    <script src="classTool.js" defer></script>
-
-    
-    <script src="app.js" defer></script>
+    <!-- <script src="classTool.js" defer></script>  
+    <script src="createClassTool.js" defer></script>  -->
+    <!-- <script src="FactoryClass.js" defer></script>   -->
+   
+    <script  defer src="app.js"></script>
     <script src="animate.js" defer></script>
+   
 
    
 </head>
@@ -142,21 +144,20 @@
             </div>
         </nav>
     </header>
-    <aside id="tools">
-            <!-- Tools begins -->
-    
-          
-            <nav>
+    <aside id="aside-menu">
+            <!-- Tools begins -->   
+            <nav id="tools">
                 <div class="tools-title">
                     Tools
                 </div>
-                <div id="select-tool" class="tool arrow"> 
+                <div id="select-tool" class="tool select"> 
                     <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="arrow-icon">
                         <path id="Vector 1" d="M3.17066 5.01553L10.6705 2.54769L8.18619 9.89861L3.17066 5.01553Z" stroke="currentcolor"/>
                         <rect id="Rectangle 5" y="11.445" width="7.18628" height="1" transform="rotate(-38.2098 0 11.445)" fill="currentcolor"/>
                         </g>
                     </svg>
+                    Select tool
                 </div>      
                 <div id="hand-tool" class="tool hand"> 
                     <svg class="test" width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -170,7 +171,8 @@
                         <rect width="12.726" height="15.9075" fill="nome" transform="matrix(-0.732274 -0.68101 -0.68101 0.732274 20.152 8.6665)"/>
                         </clipPath>
                         </defs>
-                    </svg>     
+                    </svg>    
+                    Hand tool 
                 </div>
                 <div id="class-tool" class="tool class"> 
                     <svg width="13" height="11" viewBox="0 0 13 11" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -180,33 +182,34 @@
                         <rect id="Rectangle 4" x="0.25" y="0.25" width="12.5" height="2.43548" stroke="currentcolor" stroke-width="0.5"/>
                         </g>
                         </g>
-                    </svg>            
+                    </svg>  
+                    Class          
                 </div>
-                <div id="pencil-tool" class="tool pencil">
-                    <svg width="19" height="17" viewBox="0 0 19 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="icon-pencil">
-                        <g id="Group 16">
-                        <path id="Vector 7" d="M5.5 1.5L12.972 7.12955L15.6359 13.1215L9.39547 12.4093L0.99999 6.08817" stroke="currentcolor"/>
-                        <path id="Vector 8" d="M12.972 7.12954C11.4947 7.4936 8.66015 9.02093 9.14106 12.2177" stroke="currentcolor"/>
+                <div id="interface-tool" class="tool interface">
+                    <svg width="19" height="11" viewBox="0 0 19 11" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g id="class-icon">
+                        <g id="Group 4">
+                        <g id="Group 27">
+                        <rect id="Rectangle 3" x="0.35" y="0.35" width="17.9" height="10.3" stroke="white" stroke-width="0.7"/>
+                        <path id="Rectangle 6" d="M18 4.39999H0" stroke="white" stroke-width="0.7"/>
                         </g>
-                        <path id="Vector 9" d="M16.6535 13.8877L14.5111 11.4774L13.7449 12.495L16.6535 13.8877Z" fill="currentcolor" stroke="currentcolor" stroke-width="0.5"/>
                         </g>
-                        </svg>
-                        
+                        </g>
+                    </svg>
+                    Interface    
                 </div>
-                <div id="line-tool"class="tool line">         
-                    <svg width="12" height="13" viewBox="0 0 12 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <line id="Line 6" x1="0.631423" y1="12.6621" x2="11.6314" y2="0.662138" stroke="currentcolor"/>
-                    </svg>       
+                <div id="line-tool"class="tool package">         
+                    <svg width="18" height="15" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0.35" y="4.35" width="17.3" height="10.3" stroke="white" stroke-width="0.7"/>
+                        <path d="M0.5 4.5V1H12L14 4V4.5" stroke="white" stroke-width="0.7"/>
+                    </svg>   
+                    Package                     
                 </div>
-                <div class="tool forms">
-                    <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g id="icon-forms">
-                        <rect id="Rectangle 20" x="0.5" y="0.5" width="12" height="10" stroke="currentcolor"/>
-                        <circle id="Ellipse 19" cx="12.5" cy="10.5" r="7" stroke="currentcolor"/>
-                        </g>
-                        </svg>
-                        
+                <div class="tool note">
+                    <svg width="17" height="10" viewBox="0 0 17 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 1H1V9H16.5V4.5M12 1L16.5 4.5M12 1V4.5H16.5" stroke="white" stroke-width="0.7"/>
+                    </svg>     
+                    Note                              
                 </div>
                 <div class="tool tetx"> 
                     <svg width="11" height="13" viewBox="0 0 11 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -223,6 +226,7 @@
                         </clipPath>
                         </defs>
                     </svg>
+                    Text
                 </div>
                 <div class="tool eraser">
                     <svg width="19" height="17" viewBox="0 0 19 17" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -233,9 +237,8 @@
                         </g>
                         </g>
                         </svg>
-                        
-                </div>
-    
+                        Eraser
+                </div>  
                  <div class="tool coment" > 
                     <svg id="tooltest" width="18" height="16" viewBox="0 0 18 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g id="icon-coment">
@@ -245,8 +248,8 @@
                         <path d="M2.81905 11.2247L3.79216 11.455L3.95045 10.7862L3.38283 10.3988L2.81905 11.2247ZM1.74781 15.7508L0.774698 15.5204L0.324958 17.4206L2.12968 16.675L1.74781 15.7508ZM8.43582 12.9874L8.48045 11.9884L8.25891 11.9785L8.05396 12.0632L8.43582 12.9874ZM17 6.5C17 7.89308 16.22 9.24438 14.7785 10.2855C13.3382 11.3257 11.2984 12 9 12V14C11.6721 14 14.1323 13.2192 15.9495 11.9069C17.7652 10.5955 19 8.69677 19 6.5H17ZM9 1C11.2984 1 13.3382 1.67431 14.7785 2.71449C16.22 3.75562 17 5.10692 17 6.5H19C19 4.30323 17.7652 2.40453 15.9495 1.09313C14.1323 -0.219232 11.6721 -1 9 -1V1ZM1 6.5C1 5.10692 1.77996 3.75562 3.22153 2.71449C4.66178 1.67431 6.70156 1 9 1V-1C6.32788 -1 3.86766 -0.219232 2.05055 1.09313C0.234762 2.40453 -1 4.30323 -1 6.5H1ZM3.38283 10.3988C1.83903 9.34495 1 7.94361 1 6.5H-1C-1 8.77884 0.32728 10.7345 2.25526 12.0506L3.38283 10.3988ZM2.72093 15.9811L3.79216 11.455L1.84593 10.9944L0.774698 15.5204L2.72093 15.9811ZM8.05396 12.0632L1.36595 14.8265L2.12968 16.675L8.81768 13.9117L8.05396 12.0632ZM9 12C8.82539 12 8.65215 11.9961 8.48045 11.9884L8.39119 13.9864C8.59264 13.9954 8.79564 14 9 14V12Z" fill="currentcolor" mask="url(#path-1-inside-1_19_86)"/>
                         </g>
                     </svg>
+                    Coment
                 </div>
-        
             </nav>
        
     </aside>
