@@ -24,11 +24,13 @@ let isLineAnimating = false
 let isRectAnimating = false
 let isCreatingUmlClass = false
 let IsConnectAnimating = false
+let isLineTouched = false
 
 
 const classes = [];
 const connections = [];
 const lines = [];
+const midlePoints = [];
 
 const toggleButton =  button => {
     button.classList.toggle('active')
@@ -46,7 +48,7 @@ tools.forEach(tool => tool.addEventListener('click', ()=>{
 const scketch02 = p => {
      p.setup = function () {
      p.createCanvas(p.windowWidth, p.windowHeight);
-     p.frameRate(24);  
+     p.frameRate(60);  
      
     
    
@@ -349,17 +351,7 @@ const connectClasses =  {
         relationship: null,
         classA: a,
         classB: b,
-        midlePoint: {
-            x: null,
-            y: null,
-            size: 20,
-            color: 'blue',
-            renderPoint: function() {
-                p.stroke( this.color)
-                p.strokeWeight( this.size)
-                p.point(this.x,this.y)
-            }
-        },
+     
        
         lineLenght: function(){
             let linLenght = p.dist(this.classA.x, this.classA.y, this.classB.x, this.classB.y)
@@ -374,7 +366,15 @@ const connectClasses =  {
             console.log('elements recivied')
         },
         renderConnection: function() {
-            p.stroke(246, 228, 0)
+            p.stroke(246, 228, 246)
+            p.strokeWeight(2)
+            p.line(this.classA.x + this.classA.width /2, this.classA.y, this.classB.x + this.classB.width/2, this.classB.y)
+        
+     
+        
+        },
+        higlight: function() {
+            p.stroke(16, 228, 232)
             p.line(this.classA.x + this.classA.width /2, this.classA.y, this.classB.x + this.classB.width/2, this.classB.y)
         
      
@@ -383,6 +383,30 @@ const connectClasses =  {
 
     }
     }
+
+    function FactoryMidleP(a,b) {
+        return {
+            domElement: null,
+            eleA: null,
+            eleB: null,
+            width:  30 ,
+            height: 30 ,
+
+            
+            renderMidlePoint: function() {
+                this.domElement = p.createDiv()
+                this.domElement.position(p.mouseX -this.width/2, p.mouseY -this.height/2)
+                this.domElement.size(this.width,this.height)       
+                this.domElement.addClass('midle-point');
+            }
+
+            
+
+
+        }
+    }
+
+   
 
     function testStroke( ) {
         console.log('a')
@@ -421,10 +445,42 @@ const connectClasses =  {
         }
          
         if(connections.length != null) {
+            let dist1;
+            let dist2;
+            let lineLenght;
+
                 for(conn of connections) {
                     conn.renderConnection()
             }
+            for(conn of connections) {
+
+                /*   this.classA.x + this.classA.width /2, this.classA.y, this.classB.x + this.classB.width/2, this.classB.y*/
+                dist1 =  parseInt(p.dist(p.mouseX, p.mouseY, conn.classA.x + conn.classA.width /2 , conn.classA.y))
+                
+                dist2 = parseInt(p.dist(p.mouseX, p.mouseY, conn.classB.x + conn.classB.width /2 , conn.classB.y))
+                
+                lineLenght = parseInt(p.dist(conn.classA.x, conn.classA.y, conn.classB.x, conn.classB.y))
+                
+              /* 
+                console.clear()
+                console.log('Dist 1',dist1)
+                console.log('Dist 2', dist2)
+                console.log('Dist s', dist2+dist1)
+                console.log('Lenght', lineLenght)
+              */
+                if (dist1+ dist2 === lineLenght) {
+                 
+                    conn.higlight()
+                     
+                    isLineTouched = true;
+                } else {
+                    isLineTouched = false
+                }
+             
+            }
         }
+
+        
          
        
       
@@ -487,6 +543,21 @@ const connectClasses =  {
             isCnvCliked = false 
         }     
 
+
+        if(isLineTouched === true) {
+            midlePoints.push(FactoryMidleP())
+            if(midlePoints.length > 0) {
+
+                let element = midlePoints[midlePoints.length-1];
+                element.renderMidlePoint()
+                   
+                
+            }
+        }
+        
+
+        
+
       
     } // p.mouseCliked ends
 
@@ -531,6 +602,7 @@ const connectClasses =  {
                 console.log('lenght',parseInt( conn.lineLenght()) )
             }
         }
+     
 
     }
     
