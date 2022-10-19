@@ -20,12 +20,14 @@ const cnvContainer3 = document.querySelector('#canvas-container3')
 
 
 
-let isLineAnimating = false
-let isRectAnimating = false
-let isCreatingUmlClass = false
-let IsConnectAnimating = false
-let isLineTouched = false
+let isLineAnimating = false;
+let isRectAnimating = false;
+let isCreatingUmlClass = false;
+let IsConnectAnimating = false;
+let isLineTouched = false;
+let isMidlePointMoving = false;
 
+let currentConn =null; 
 
 const classes = [];
 const connections = [];
@@ -220,7 +222,14 @@ let getDomTest = null;
                 this.x = nX;
                 this.y = nY;
             },
-            drawUmlClass: function() {
+            showArrows: function() {
+                this.arrowUp.addClass('show-arrow')
+                this.arrowLeft.addClass('show-arrow')
+                this.arrowRight.addClass('show-arrow')
+                this.arrowDown.addClass('show-arrow')
+
+            },
+            drawUmlClass: function () {
                 
                  const classHtmlContent = "<h3> Class Name </h3> <div class='atributes'> <span class='atr-simbol'> + </span> Atributes</div> <div class='method'> <span class='meth-simbol'> () </span> Methods</div>"
            
@@ -234,7 +243,8 @@ let getDomTest = null;
                     this.arrowDown = p5.createDiv()
 
             
-                     this.domElement.mouseOver(setClassForConn)
+                   
+
                     
                     this.arrowLeft.addClass('arrow-left')
                     this.arrowUp.addClass('arrow-up')
@@ -251,6 +261,7 @@ let getDomTest = null;
                     this.arrowRight.mousePressed(testDragg)
                     this.arrowDown.mousePressed(testDragg)
 
+
                     this.arrowUp.addClass('arrow')
                     this.arrowLeft.addClass('arrow')
                     this.arrowRight.addClass('arrow')
@@ -263,15 +274,25 @@ let getDomTest = null;
                     this.domElement.addClass('uml-class');
                     this.domElement.position(p.mouseX -this.width/2, p.mouseY -this.height/2)
 
-                    
+
                     this.domElement.child(this.arrowLeft)    
                     this.domElement.child(this.arrowUp)    
                     this.domElement.child(this.arrowRight)    
-                    this.domElement.child(this.arrowDown)    
+                    this.domElement.child(this.arrowDown)  
+                    this.domElement.mouseOver(setClassForConn)
+                                  
                 }
             }
         }
 
+    }
+    function testOver() {
+   
+        for( umlClass of classes){
+            if(detectMouseOnRect(umlClass)){
+                classes.indexOf(umlClass)
+            }
+        }
     }
     
 //   function FactoryConnection() {
@@ -312,53 +333,50 @@ let getDomTest = null;
 //         }   
 //    }
 // }
-const classBufer = {
-    classSeted: null,
+    const classBufer = {
+        classSeted: null,
+        
+        setClass: function(c) {
+            this.classSeted = c
+        }
+    }
+    const connectClasses =  {
     
-    setClass: function(c) {
-        this.classSeted = c
-    }
-}
-const connectClasses =  {
-  
-    firstClick: true,
+        firstClick: true,
 
-    firstElement: null,
-    secondElement: null,
-    conectType: { 
-       inheritance: null
-    }, 
-   
-    setFirstElement : function(e){
-           this.firstElement = e;
-           console.log('seting first element', e.x,e.y)
-    },
-    setSecondElement : function(e) {
-       this.secondElement = e;
-       console.log('seting second element', e.x ,e.y) 
-    }, 
-    resetElements : function() {
-        this.firstElement = null;
-        this.secondElement = null;
-        this.firstClick = true;
-        console.log( 'reseting connectClasses')
+        firstElement: null,
+        secondElement: null,
+        conectType: { 
+        inheritance: null
+        }, 
+    
+        setFirstElement : function(e){
+            this.firstElement = e;
+            console.log('seting first element', e.x,e.y)
+        },
+        setSecondElement : function(e) {
+        this.secondElement = e;
+        console.log('seting second element', e.x ,e.y) 
+        }, 
+        resetElements : function() {
+            this.firstElement = null;
+            this.secondElement = null;
+            this.firstClick = true;
+            console.log( 'reseting connectClasses')
+        }
+    
     }
-   
-}
     function FactoryConnection(a,b) {
 
         return {
         relationship: null,
         classA: a,
         classB: b,
-     
-       
+      
         lineLenght: function(){
             let linLenght = p.dist(this.classA.x, this.classA.y, this.classB.x, this.classB.y)
             return linLenght;
-        }
-        
-        ,
+        },
 
         setClasses: function(a,b) {
             this.classA = a;
@@ -369,61 +387,79 @@ const connectClasses =  {
             p.stroke(246, 228, 246)
             p.strokeWeight(2)
             p.line(this.classA.x + this.classA.width /2, this.classA.y, this.classB.x + this.classB.width/2, this.classB.y)
-        
-     
-        
+           
         },
         higlight: function() {
             p.stroke(16, 228, 232)
             p.line(this.classA.x + this.classA.width /2, this.classA.y, this.classB.x + this.classB.width/2, this.classB.y)
         
-     
-        
         }
 
     }
     }
 
-    function FactoryMidleP(a,b) {
+
+    function FactoryMidleP() {
         return {
             domElement: null,
             eleA: null,
             eleB: null,
-            width:  30 ,
-            height: 30 ,
+            width:  6,
+            height: 6 ,
+            moving: false,
 
-            
+            setElements: function(a,b) {
+                this.eleA = a;
+                this.eleB = b;
+            },
             renderMidlePoint: function() {
                 this.domElement = p.createDiv()
                 this.domElement.position(p.mouseX -this.width/2, p.mouseY -this.height/2)
                 this.domElement.size(this.width,this.height)       
                 this.domElement.addClass('midle-point');
-            }
-
-            
-
-
+                this.domElement.mousePressed(midlePointMoving)
+                this.domElement.mouseReleased(midlePointStop)
+                connections.splice(currentConn, 1);
+            }, 
+    
         }
+        
     }
 
-   
-
-    function testStroke( ) {
-        console.log('a')
+    function midlePointMoving () {
+        isMidlePointMoving = true
     }
+    function midlePointStop () {
+        isMidlePointMoving = false
+    }
+    
     let ix = 0
     let iy = 0
     // This function detects colision on rect forms like squares or retangles
+
+ 
     function detectMouseOnRect (rect) {
         if(rect.x < p.mouseX && rect.width + rect.x >p.mouseX && rect.y < p.mouseY && rect.width + rect.y> p.mouseY ) {
-            return true
+            return true     
+        } 
+    }
+    function detectMouseOnConneciton(conn) {
+        let dist1;
+        let dist2;
+        let lineLenght;
+        let buffer = 0.1;
+
+            dist1 =  p.dist(p.mouseX, p.mouseY, conn.classA.x  , conn.classA.y) 
+            dist2 = p.dist(p.mouseX, p.mouseY, conn.classB.x , conn.classB.y)   
+            lineLenght = p.dist(conn.classA.x, conn.classA.y, conn.classB.x, conn.classB.y)
+             
+            if (dist1+ dist2 >= lineLenght-buffer && dist1+dist2 <= lineLenght+buffer) {
+                return true
+            } 
         
-        }
-    
     }
  
     let moving = false;
-
     let detectMouse = true;
     let indexOfElement = null;
     let currentClassOnConnect = null;
@@ -443,66 +479,41 @@ const connectClasses =  {
             classes.forEach(element => element.arrowRight.removeClass('hide') )
             classes.forEach(element => element.arrowDown.removeClass('hide') )
         }
-         
-        if(connections.length != null) {
-            let dist1;
-            let dist2;
-            let lineLenght;
 
+        if(connections.length != null) {
+            
                 for(conn of connections) {
                     conn.renderConnection()
+                    if(detectMouseOnConneciton(conn)) {
+                        conn.higlight()
+                        currentConn = connections.indexOf(conn);
+                        console.log(currentConn)
+                    }
             }
-            for(conn of connections) {
-
-                /*   this.classA.x + this.classA.width /2, this.classA.y, this.classB.x + this.classB.width/2, this.classB.y*/
-                dist1 =  parseInt(p.dist(p.mouseX, p.mouseY, conn.classA.x + conn.classA.width /2 , conn.classA.y))
-                
-                dist2 = parseInt(p.dist(p.mouseX, p.mouseY, conn.classB.x + conn.classB.width /2 , conn.classB.y))
-                
-                lineLenght = parseInt(p.dist(conn.classA.x, conn.classA.y, conn.classB.x, conn.classB.y))
-                
-              /* 
-                console.clear()
-                console.log('Dist 1',dist1)
-                console.log('Dist 2', dist2)
-                console.log('Dist s', dist2+dist1)
-                console.log('Lenght', lineLenght)
-              */
-                if (dist1+ dist2 === lineLenght) {
-                 
-                    conn.higlight()
-                     
-                    isLineTouched = true;
-                } else {
-                    isLineTouched = false
-                }
-             
-            }
+          
         }
 
+        if(midlePoints.length != null) {
+            for(midleP of midlePoints) {
+                if (isMidlePointMoving ) {  
+                    midlePoints[currentMidlePoint].domElement.position(p.mouseX, p.mouseY)
+                }   
+            }
+        }
         
-         
-       
-      
-
-     
-       
-     
     } // p.draw function ends
     
     function testDragg() {
+
         connectClasses.setFirstElement(classBufer.classSeted)
         connectClasses.firstClick = false
         
         animateConnection(connectClasses.firstElement.x,connectClasses.firstElement.y)
         moving = false;
         classTollButton.classList.remove('active')
-   
-      
-       
+        
     }
 
-   
     function animateConnection(x,y) {
         animateConnX = x;
         animateConnY = y;
@@ -511,17 +522,15 @@ const connectClasses =  {
 
     function setClassForConn() {
         classBufer.setClass(this)
+        testOver()
+        
         console.log('class seted for connection', 'X',classBufer.classSeted.x,'Y',classBufer.classSeted.y);
     }
-
-
-
 
     let isCnvCliked  = false;
     let conectElementAnimating = false;
 
     cnvContainer2.addEventListener('click',()=> isCnvCliked = true);
-
 
 
 
@@ -542,26 +551,36 @@ const connectClasses =  {
             }
             isCnvCliked = false 
         }     
-
-
-        if(isLineTouched === true) {
-            midlePoints.push(FactoryMidleP())
-            if(midlePoints.length > 0) {
-
-                let element = midlePoints[midlePoints.length-1];
-                element.renderMidlePoint()
-                   
-                
-            }
-        }
-        
-
-        
-
+       
       
     } // p.mouseCliked ends
 
-    
+    p.doubleClicked = function() {
+
+        console.log('double click')
+
+        if(connections.length != null) {
+
+            for(conn of connections) {
+              
+              if(detectMouseOnConneciton(conn)) {
+                 console.log('here',conn.classA.x)
+                  midlePoints.push(FactoryMidleP())      
+                 
+                  if(midlePoints.length > 0) {
+                      let midlePoint= midlePoints[midlePoints.length-1];
+                      midlePoint.renderMidlePoint()
+                      midlePoint.setElements(conn.classA,conn.classB)
+                      connections.push(FactoryConnection(midlePoint.domElement,conn.classA))
+                      connections.push(FactoryConnection(midlePoint.domElement,conn.classB))
+                  }
+              }
+  
+            }
+  
+         }
+    }
+     
     p.mousePressed  = function() {
         
         if(classes[0] != null ) {   
@@ -571,19 +590,25 @@ const connectClasses =  {
                     if(moving) {
                         classTollButton.classList.remove('active')    
                     }
-                    indexOfElement = classes.indexOf(umlClass);
+                    indexOfElement = classes.indexOf(umlClass);             
                 }
             }
+        }
+        if(midlePoints[0] != null) {
+                for( midleP of midlePoints) {
+                    if (detectMouseOnRect(midleP.domElement)){
+                        currentMidlePoint = midlePoints.indexOf(midleP)
+                    }
+                }
         }
     }
  
     p.mouseReleased = function() {
         moving = false;   
         IsConnectAnimating = false
+        isMidlePointMoving = false
         
         if(classes[0] != null ) {   
-
-   
 
             for(umlClass of classes) {     
                 if(detectMouseOnRect(umlClass.domElement) && connectClasses.firstClick === false ){
@@ -603,7 +628,6 @@ const connectClasses =  {
             }
         }
      
-
     }
     
 } // scketch01 ends 

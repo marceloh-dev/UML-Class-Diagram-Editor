@@ -240,7 +240,6 @@ canvas {
     top:  50px;
     left: 250px;
     border-radius: 3px;
-    
    }
    .uml-class:hover {
     background-color: #e2e2e2;
@@ -248,8 +247,14 @@ canvas {
     /* transition: ease-in 300ms; */
     padding: 0;
     cursor: move;
-
    }
+   .uml-class:hover .arrow {
+
+    opacity: 1;
+   
+   }
+  
+
    .uml-class h3 {
     width: 100%;
     height: 35px;
@@ -258,55 +263,69 @@ canvas {
     align-items: center;
     justify-content: center;
    }
+
    .uml-class .atributes, .uml-class .method {
     width: 100%;
     height:  33%;
     border: #1e1e1e 1px solid;
    }
-   
-   
 
-  .arrow {
-    position: absolute;
-    width: 20px;
-    height: 30px;
-  }
-
- .arrow-left {
-
+.uml-class:hover .arrow-left{
     left: -20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
+} 
 
- .arrow-up {
-    top: -28px;
-    left: 50%;
-    transform: translateX(-50%);
-
-}
- .arrow-right {
-
-    right: -25px;
+   
+.arrow-left{
+    left: 0;
     top: 50%;
     transform: translateY(-50%);
 } 
-.arrow-down {
-
+.uml-class:hover .arrow-up{
+    top: -28px
+}
+ .arrow-up {
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.uml-class:hover .arrow-right {
+    right: -25px;
+}
+ .arrow-right {
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+} 
+.uml-class:hover .arrow-down{
     bottom: -28px;
+}
+.arrow-down {
+    bottom: 0;
     left: 50%;
     transform: translateX(-50%);
 }
 
+
+.arrow {
+    position: absolute;
+    width: 20px;
+    height: 30px;
+    opacity: 0;
+    transition: ease-in-out 300ms;
+  }
 .hide{
     display: none;
     cursor: default;
 }
 
 .midle-point {
-    width: 50px;
-    height: 50px;
     border-radius: 50%;
-    background-color: #00facd;
-    border: 1px solid gold;
+    background-color: #66ffbd;
+    transform: translateY(-2px);
+ 
+}
+.midle-point:hover {
+    border: 3px solid rgb(0, 136, 255);
+    cursor: crosshair;
+    
 }
