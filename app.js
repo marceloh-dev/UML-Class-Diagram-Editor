@@ -7,10 +7,13 @@ const selectToolButton = document.querySelector('#select-tool');
 const pencilToolButton = document.querySelector('#pencil-tool');
 const lineToolButton = document.querySelector('#line-tool');
 const eraseToolButton = document.querySelector('#pencil-tool');
+const noteToolButton = document.querySelector('#note-tool')
+const packageToolButton = document.querySelector('#package-tool')
 
 const cnvContainer1 = document.querySelector('#canvas-container1')
 const cnvContainer2 = document.querySelector('#canvas-container2')
 const cnvContainer3 = document.querySelector('#canvas-container3')
+
 
 
 // const stn = document.createElement('div')
@@ -33,6 +36,7 @@ const classes = [];
 const connections = [];
 const lines = [];
 const midlePoints = [];
+const notes = [];
 
 const toggleButton =  button => {
     button.classList.toggle('active')
@@ -211,8 +215,21 @@ let getDomTest = null;
             
             width: 140,
             height: 90,
+
             domElement: null,
-            childReference: null,
+
+            classNameContainer: null,
+            atributesContainer: null,
+            visibilityContainer: null,
+            methodsContainer:  null,
+            classNameInput: null ,
+            atributsInput: null,
+            methodsInput: null,
+            
+            atributes: [],
+            methods: [],
+
+            
             arrowLeft: null,
             arrowUp: null,
             arrowRight: null,
@@ -232,19 +249,57 @@ let getDomTest = null;
             drawUmlClass: function () {
                 
                  const classHtmlContent = "<h3> Class Name </h3> <div class='atributes'> <span class='atr-simbol'> + </span> Atributes</div> <div class='method'> <span class='meth-simbol'> () </span> Methods</div>"
-           
+                 
+                 const division  = p5.createDiv()
+                 const division2 = p5.createDiv()
+                 
+                 division.addClass('division')
+                 division2.addClass('division')
+
                  if(detectMouse  !== null)  {
                 
                     this.domElement = p5.createDiv()
+
+
                    
+                    this.domElement.size(this.width,this.height)       
+                    this.domElement.addClass('uml-class');
+                    this.domElement.position(p.mouseX -this.width/2, p.mouseY -this.height/2)
+
+
+
+                    this.classNameContainer = p5.createDiv()
+                    this.atributesContainer = p5.createDiv( )
+                    this.methodsContainer = p5.createDiv()
+                    this.visibilityContainer = p5.createSpan()
+                    
+
+                    this.classNameInput = p5.createDiv("<input class = 'input-class' value = 'Class Name'type='text'> </input>")
+                    this.atributsInput =  p5.createDiv("<textarea class = 'input-class atribute'> </textarea>")
+                    this.methodsInput =  p5.createDiv("<div class='methods'> </div>")
+
+                    this.classNameContainer.addClass('class-name')
+                    
+                    this.atributesContainer.addClass('atributes')
+                    this.atributesContainer.child(this.atributsInput)
+                    this.methodsContainer.addClass('methods') 
+                    this.methodsContainer.child(this.methodsInput)
+                    this.visibilityContainer.addClass('atr-simbol') 
+
+                    this.classNameContainer.html("<h3>  </h3>")
+                    this.classNameContainer.child(this.classNameInput)
+                    this.classNameContainer.mousePressed(changeClassName)
+                    
+                    this.atributesContainer.child(this.visibilityContainer)
+             
+              
+
+                    
+
                     this.arrowLeft = p5.createDiv()
                     this.arrowUp = p5.createDiv()
                     this.arrowRight = p5.createDiv()
-                    this.arrowDown = p5.createDiv()
-
-            
-                   
-
+                    this.arrowDown = p5.createDiv()   
                     
                     this.arrowLeft.addClass('arrow-left')
                     this.arrowUp.addClass('arrow-up')
@@ -267,16 +322,16 @@ let getDomTest = null;
                     this.arrowRight.addClass('arrow')
                     this.arrowDown.addClass('arrow')
 
-                  
-
-                    this.domElement.html(classHtmlContent)
-                    this.domElement.size(this.width,this.height)       
-                    this.domElement.addClass('uml-class');
-                    this.domElement.position(p.mouseX -this.width/2, p.mouseY -this.height/2)
-
+                    this.domElement.child(this.classNameContainer)
+                    this.domElement.child(division)
+                    this.domElement.child(this.atributesContainer)
+                    this.domElement.child(division2)
+                    this.domElement.child(this.methodsContainer)    
+                    
+                    
 
                     this.domElement.child(this.arrowLeft)    
-                    this.domElement.child(this.arrowUp)    
+                    this.domElement.child(this.arrowUp)
                     this.domElement.child(this.arrowRight)    
                     this.domElement.child(this.arrowDown)  
                     this.domElement.mouseOver(setClassForConn)
@@ -284,6 +339,7 @@ let getDomTest = null;
                 }
             }
         }
+        
 
     }
     function testOver() {
@@ -294,7 +350,34 @@ let getDomTest = null;
             }
         }
     }
+    function changeClassName() {
+        this.addClass('texting')
+        console.log('ok')
+        
+    }
     
+    function FactoryNote(p) {
+      const p5 = p
+        return { 
+            domElement: null,
+            textContent: null, 
+            renderNote: function (){
+                this.domElement = p5.createDiv()
+                this.domElement.addClass('note-element')
+                this.domElement.position(p5.mouseX - 60 ,p5.mouseY - 25)
+                
+                this.textContent =document.createElement('textarea')
+                
+                this.textContent.addEventListener('input',testInput)
+                this.domElement.child(this.textContent)
+            
+                noteToolButton.classList.remove('active')
+            }
+        }
+    }
+    function testInput( ) {
+        console.log('WORKING HEALY WELL')
+    }
 //   function FactoryConnection() {
 
 //    return {
@@ -352,17 +435,17 @@ let getDomTest = null;
     
         setFirstElement : function(e){
             this.firstElement = e;
-            console.log('seting first element', e.x,e.y)
+       
         },
         setSecondElement : function(e) {
         this.secondElement = e;
-        console.log('seting second element', e.x ,e.y) 
+    
         }, 
         resetElements : function() {
             this.firstElement = null;
             this.secondElement = null;
             this.firstClick = true;
-            console.log( 'reseting connectClasses')
+     
         }
     
     }
@@ -381,17 +464,19 @@ let getDomTest = null;
         setClasses: function(a,b) {
             this.classA = a;
             this.classB = b;
-            console.log('elements recivied')
+          
         },
         renderConnection: function() {
             p.stroke(246, 228, 246)
             p.strokeWeight(2)
-            p.line(this.classA.x + this.classA.width /2, this.classA.y, this.classB.x + this.classB.width/2, this.classB.y)
+            p.line(this.classA.x + this.classA.width /2, this.classA.y + this.classA.height/2, this.classB.x + this.classB.width/2, this.classB.y + this.classB.height/2)
            
         },
         higlight: function() {
             p.stroke(16, 228, 232)
-            p.line(this.classA.x + this.classA.width /2, this.classA.y, this.classB.x + this.classB.width/2, this.classB.y)
+            p.line(this.classA.x + this.classA.width /2, this.classA.y + this.classA.height/2, this.classB.x + this.classB.width/2, this.classB.y + this.classB.height/2)
+        
+            
         
         }
 
@@ -404,8 +489,8 @@ let getDomTest = null;
             domElement: null,
             eleA: null,
             eleB: null,
-            width:  6,
-            height: 6 ,
+            width:  4,
+            height: 4 ,
             moving: false,
 
             setElements: function(a,b) {
@@ -414,7 +499,7 @@ let getDomTest = null;
             },
             renderMidlePoint: function() {
                 this.domElement = p.createDiv()
-                this.domElement.position(p.mouseX -this.width/2, p.mouseY -this.height/2)
+                this.domElement.position(p.mouseX , p.mouseY )
                 this.domElement.size(this.width,this.height)       
                 this.domElement.addClass('midle-point');
                 this.domElement.mousePressed(midlePointMoving)
@@ -425,6 +510,8 @@ let getDomTest = null;
         }
         
     }
+
+    
 
     function midlePointMoving () {
         isMidlePointMoving = true
@@ -449,10 +536,12 @@ let getDomTest = null;
         let lineLenght;
         let buffer = 0.1;
 
-            dist1 =  p.dist(p.mouseX, p.mouseY, conn.classA.x  , conn.classA.y) 
-            dist2 = p.dist(p.mouseX, p.mouseY, conn.classB.x , conn.classB.y)   
-            lineLenght = p.dist(conn.classA.x, conn.classA.y, conn.classB.x, conn.classB.y)
-             
+            dist1 = p.dist(p.mouseX, p.mouseY, conn.classA.x + conn.classA.width /2 , conn.classA.y + conn.classA.height /2)  
+
+            dist2 = p.dist(p.mouseX, p.mouseY, conn.classB.x + conn.classB.width /2 , conn.classB.y + conn.classB.height /2)   
+      
+            lineLenght = p.dist(conn.classA.x+ conn.classA.width / 2, conn.classA.y + conn.classA.height/2, conn.classB.x + conn.classB.width / 2, conn.classB.y + conn.classB.height /2)
+        
             if (dist1+ dist2 >= lineLenght-buffer && dist1+dist2 <= lineLenght+buffer) {
                 return true
             } 
@@ -487,7 +576,7 @@ let getDomTest = null;
                     if(detectMouseOnConneciton(conn)) {
                         conn.higlight()
                         currentConn = connections.indexOf(conn);
-                        console.log(currentConn)
+                        console.log(conn)
                     }
             }
           
@@ -508,7 +597,7 @@ let getDomTest = null;
         connectClasses.setFirstElement(classBufer.classSeted)
         connectClasses.firstClick = false
         
-        animateConnection(connectClasses.firstElement.x,connectClasses.firstElement.y)
+        animateConnection(connectClasses.firstElement.x  + connectClasses.firstElement.width /2,connectClasses.firstElement.y+ connectClasses.firstElement.height / 2)
         moving = false;
         classTollButton.classList.remove('active')
         
@@ -524,7 +613,7 @@ let getDomTest = null;
         classBufer.setClass(this)
         testOver()
         
-        console.log('class seted for connection', 'X',classBufer.classSeted.x,'Y',classBufer.classSeted.y);
+
     }
 
     let isCnvCliked  = false;
@@ -535,10 +624,22 @@ let getDomTest = null;
 
 
     p.mouseClicked = function() {
+        if(classes.length != null) {
+            for(umlClass of classes) {
+             if(detectMouseOnRect(umlClass)) {
+                 moving = false
+             }
+            }
+         }
+        if(noteToolButton.classList.contains('active') && isCnvCliked) {
+            notes.push(FactoryNote(p))
+            console.log('  ACTIVE')
+            if( notes.length > 0) {
+                let element = notes[notes.length-1]
+                 
+                element.renderNote()
 
-        if(lineToolButton.classList.contains('active') && isCnvCliked) {
-            lineTool.drawSingleLines()
-            isCnvCliked = false
+            }
         }
         
         if(classTollButton.classList.contains('active') && isCnvCliked ) {    
@@ -556,15 +657,14 @@ let getDomTest = null;
     } // p.mouseCliked ends
 
     p.doubleClicked = function() {
-
-        console.log('double click')
+       
 
         if(connections.length != null) {
 
             for(conn of connections) {
               
               if(detectMouseOnConneciton(conn)) {
-                 console.log('here',conn.classA.x)
+        
                   midlePoints.push(FactoryMidleP())      
                  
                   if(midlePoints.length > 0) {
@@ -612,19 +712,19 @@ let getDomTest = null;
 
             for(umlClass of classes) {     
                 if(detectMouseOnRect(umlClass.domElement) && connectClasses.firstClick === false ){
-                   console.log('mouse released on class', umlClass.domElement.x)
-                    console.log(connectClasses.firstClick)
+                  
+                 
                     connectClasses.setSecondElement(classBufer.classSeted)
                     connections.push(FactoryConnection(connectClasses.firstElement,connectClasses.secondElement))
-                    console.log('A conection was done!')
-                    console.log(connections[connections.length-1])
+           
+                  
                     connectClasses.resetElements()
                 }
             }
         }
         if(connections.length != null ) {
             for( conn of  connections) {
-                console.log('lenght',parseInt( conn.lineLenght()) )
+              
             }
         }
      

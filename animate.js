@@ -64,14 +64,18 @@ oldY = p.mouseY
     if (isLineAnimating === true && lineToolButton.classList.contains('active')) {
         p.line(lineAnimation.startX,lineAnimation.startY,p.mouseX,p.mouseY)
     }
-    if(isRectAnimating === true && classTollButton.classList.contains('active')){
-        console.log('test')
+    if( packageToolButton.classList.contains('active') ){
+        console.log('test rect ')
         p.rect(rectAnimation.startX,rectAnimation.startY,p.mouseX -rectAnimation.startX ,p.mouseY-rectAnimation.startY)
         p.rect(rectAnimation.startX,rectAnimation.startY, p.mouseX -rectAnimation.startX , (p.mouseY-rectAnimation.startY)/2)
         p.rect(rectAnimation.startX,rectAnimation.startY, p.mouseX -rectAnimation.startX , (p.mouseY-rectAnimation.startY)/4)
     }
     if(classTollButton.classList.contains('active')){
         p.rect(p.mouseX -70, p.mouseY -45,140,90)
+    }
+
+    if (noteToolButton.classList.contains('active')) {
+        p.rect(p.mouseX - 60, p.mouseY - 25, 120, 50)
     }
      
     if(IsConnectAnimating) {

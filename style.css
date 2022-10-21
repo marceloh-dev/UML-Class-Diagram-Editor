@@ -13,6 +13,12 @@
     box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
+input {
+    all: unset;
+  }
+textarea {
+    all:unset
+}
 body {
     width: 100vw;
     height: 100vh;
@@ -232,6 +238,10 @@ canvas {
     color: rgb(16, 228, 232);
    }
    .uml-class{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     background-color: rgb(255, 255, 255);
     border: 2px solid rgb(0, 0, 0);
     height: 100px;
@@ -240,6 +250,10 @@ canvas {
     top:  50px;
     left: 250px;
     border-radius: 3px;
+  
+   }
+   .uml-class div {
+    transition: ease-in-out 400ms;
    }
    .uml-class:hover {
     background-color: #e2e2e2;
@@ -254,25 +268,66 @@ canvas {
    
    }
   
-
+  .class-name {
+    width: 100%;
+    height: fit-content;
+   
+  }
+  .class-name:hover,.atributes:hover, .methods:hover  {
+    background-color: #daf4e9;
+  }
+  
    .uml-class h3 {
     width: 100%;
     height: 35px;
-    border: #1e1e1e 1px solid;
+    
     display: flex;
     align-items: center;
     justify-content: center;
+  
    }
+   .uml-class .atribute {
+    text-align: left;
+    text-indent: 10px;
+    font-weight: unset;
+   
+   }
+  .uml-class .methods {
+    
+  }
 
-   .uml-class .atributes, .uml-class .method {
+   
+   .uml-class .atributes, .uml-class .methods {
     width: 100%;
-    height:  33%;
-    border: #1e1e1e 1px solid;
+    min-height:  33%;
+    height: fit-content;
+    position: relative;
+   
    }
+ 
 
 .uml-class:hover .arrow-left{
     left: -20px;
 } 
+
+.division {
+    width: 100%;
+    height: 1px;
+    background-color: #1e1e1e;
+}
+
+.input-class {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    height: 35px;
+    text-align: center;
+    font-weight: bold;
+    border: hidden;
+}
+input:hover {
+    border: hidden;
+}
 
    
 .arrow-left{
@@ -320,12 +375,43 @@ canvas {
 
 .midle-point {
     border-radius: 50%;
-    background-color: #66ffbd;
-    transform: translateY(-2px);
+    background-color: #f8fffb;
+    
  
 }
 .midle-point:hover {
-    border: 3px solid rgb(0, 136, 255);
+    border: 3px solid rgb(0, 255, 136);
     cursor: crosshair;
     
+}
+
+.texting {
+    cursor: text;
+    
+}
+
+.note-element {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+    min-width: 120px;
+    min-height: 50px;
+  
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: rgb(255, 246, 189);
+
+}
+
+
+.note-element textarea{
+    width: 80%;
+    border: #00facd solid 1px;
+    
+    height: 90%;
+    position: relative;
+}
+
+textarea::-webkit-scrollbar {
+    width: 0;
 }
